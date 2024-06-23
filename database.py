@@ -7,7 +7,7 @@ load_dotenv()
 
 # Create a connection to the database
 engine = create_engine(
-    'postgresql+psycopg2://postgres:yaswanth@localhost:5432/postgres', 
+    'postgresql+psycopg2://whatsapp_ga3f_user:F6jkr9CTaO2ojq9ADns8BlnJdC4frTqX@dpg-cps6gqg8fa8c7392fjc0-a.oregon-postgres.render.com/whatsapp_ga3f', 
     pool_size=20,
     max_overflow=50, 
     pool_timeout=30, 
