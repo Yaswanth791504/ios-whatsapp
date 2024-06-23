@@ -1,0 +1,1056 @@
+--
+-- PostgreSQL database cluster dump
+--
+
+-- Started on 2024-06-21 07:40:31
+
+SET default_transaction_read_only = off;
+
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+
+--
+-- Roles
+--
+
+CREATE ROLE postgres;
+ALTER ROLE postgres WITH SUPERUSER INHERIT CREATEROLE CREATEDB LOGIN REPLICATION BYPASSRLS PASSWORD 'SCRAM-SHA-256$4096:Wn7u1WyRP3tEjfDpAyOnKQ==$lr7xu/pHz6HklGGay1W5Ll7KyFUgSQx1lz1lPTcXKJg=:LljtkH/aq4omACgNw7wjBEM9yu1cAudECQ4WNEz87og=';
+
+--
+-- User Configurations
+--
+
+
+
+
+
+
+
+
+--
+-- Databases
+--
+
+--
+-- Database "template1" dump
+--
+
+\connect template1
+
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 16.3
+-- Dumped by pg_dump version 16.3
+
+-- Started on 2024-06-21 07:40:31
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+-- Completed on 2024-06-21 07:40:31
+
+--
+-- PostgreSQL database dump complete
+--
+
+--
+-- Database "postgres" dump
+--
+
+\connect postgres
+
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 16.3
+-- Dumped by pg_dump version 16.3
+
+-- Started on 2024-06-21 07:40:31
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 2 (class 3079 OID 16384)
+-- Name: adminpack; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS adminpack WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 4963 (class 0 OID 0)
+-- Dependencies: 2
+-- Name: EXTENSION adminpack; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION adminpack IS 'administrative functions for PostgreSQL';
+
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 227 (class 1259 OID 16804)
+-- Name: calls; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.calls (
+    id integer NOT NULL,
+    caller integer,
+    receiver integer,
+    started_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    duration interval,
+    call_type character varying DEFAULT 'phonecall'::character varying NOT NULL
+);
+
+
+ALTER TABLE public.calls OWNER TO postgres;
+
+--
+-- TOC entry 226 (class 1259 OID 16803)
+-- Name: calls_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.calls_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.calls_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4964 (class 0 OID 0)
+-- Dependencies: 226
+-- Name: calls_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.calls_id_seq OWNED BY public.calls.id;
+
+
+--
+-- TOC entry 225 (class 1259 OID 16755)
+-- Name: friends; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.friends (
+    id integer NOT NULL,
+    friend1 integer,
+    friend2 integer,
+    friends_since timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    last_message character varying,
+    last_message_time timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    last_message_type character varying DEFAULT 'text'::character varying
+);
+
+
+ALTER TABLE public.friends OWNER TO postgres;
+
+--
+-- TOC entry 224 (class 1259 OID 16754)
+-- Name: friends_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.friends_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.friends_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4965 (class 0 OID 0)
+-- Dependencies: 224
+-- Name: friends_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.friends_id_seq OWNED BY public.friends.id;
+
+
+--
+-- TOC entry 229 (class 1259 OID 16830)
+-- Name: groupmembers; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.groupmembers (
+    id integer NOT NULL,
+    group_id integer,
+    user_id integer
+);
+
+
+ALTER TABLE public.groupmembers OWNER TO postgres;
+
+--
+-- TOC entry 228 (class 1259 OID 16829)
+-- Name: groupmembers_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.groupmembers_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.groupmembers_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4966 (class 0 OID 0)
+-- Dependencies: 228
+-- Name: groupmembers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.groupmembers_id_seq OWNED BY public.groupmembers.id;
+
+
+--
+-- TOC entry 219 (class 1259 OID 16643)
+-- Name: groups; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.groups (
+    id integer NOT NULL,
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    group_profile character varying DEFAULT 'https://res.cloudinary.com/drv13gs45/image/upload/v1718000630/ios-whatsapp/group-default.png'::character varying NOT NULL,
+    group_description character varying NOT NULL,
+    group_name character varying NOT NULL,
+    admin_id integer NOT NULL
+);
+
+
+ALTER TABLE public.groups OWNER TO postgres;
+
+--
+-- TOC entry 218 (class 1259 OID 16642)
+-- Name: groups_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.groups_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.groups_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4967 (class 0 OID 0)
+-- Dependencies: 218
+-- Name: groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.groups_id_seq OWNED BY public.groups.id;
+
+
+--
+-- TOC entry 231 (class 1259 OID 16847)
+-- Name: media; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.media (
+    id integer NOT NULL,
+    sender integer,
+    receiver integer,
+    media_link character varying NOT NULL,
+    media_type character varying NOT NULL,
+    sent_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP
+);
+
+
+ALTER TABLE public.media OWNER TO postgres;
+
+--
+-- TOC entry 230 (class 1259 OID 16846)
+-- Name: media_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.media_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.media_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4968 (class 0 OID 0)
+-- Dependencies: 230
+-- Name: media_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.media_id_seq OWNED BY public.media.id;
+
+
+--
+-- TOC entry 223 (class 1259 OID 16734)
+-- Name: messages; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.messages (
+    id integer NOT NULL,
+    receiver integer NOT NULL,
+    sender integer NOT NULL,
+    message character varying NOT NULL,
+    sent_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP
+);
+
+
+ALTER TABLE public.messages OWNER TO postgres;
+
+--
+-- TOC entry 222 (class 1259 OID 16733)
+-- Name: messages_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.messages_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.messages_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4969 (class 0 OID 0)
+-- Dependencies: 222
+-- Name: messages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.messages_id_seq OWNED BY public.messages.id;
+
+
+--
+-- TOC entry 221 (class 1259 OID 16673)
+-- Name: notificationtokens; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.notificationtokens (
+    id integer NOT NULL,
+    user_id integer,
+    token character varying NOT NULL
+);
+
+
+ALTER TABLE public.notificationtokens OWNER TO postgres;
+
+--
+-- TOC entry 220 (class 1259 OID 16672)
+-- Name: notificationtokens_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.notificationtokens_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.notificationtokens_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4970 (class 0 OID 0)
+-- Dependencies: 220
+-- Name: notificationtokens_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.notificationtokens_id_seq OWNED BY public.notificationtokens.id;
+
+
+--
+-- TOC entry 233 (class 1259 OID 16867)
+-- Name: status; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.status (
+    id integer NOT NULL,
+    user_id integer,
+    status_link character varying,
+    status_text character varying,
+    uploaded_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    status_type character varying DEFAULT 'text'::character varying NOT NULL,
+    status_text_color character varying,
+    CONSTRAINT status_not_null CHECK (((status_text IS NOT NULL) OR (status_link IS NOT NULL)))
+);
+
+
+ALTER TABLE public.status OWNER TO postgres;
+
+--
+-- TOC entry 232 (class 1259 OID 16866)
+-- Name: status_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.status_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.status_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4971 (class 0 OID 0)
+-- Dependencies: 232
+-- Name: status_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.status_id_seq OWNED BY public.status.id;
+
+
+--
+-- TOC entry 217 (class 1259 OID 16562)
+-- Name: users; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.users (
+    id integer NOT NULL,
+    name character varying(50),
+    email character varying DEFAULT 'user@example.com'::character varying,
+    profile_picture character varying DEFAULT 'https://res.cloudinary.com/drv13gs45/image/upload/v1717225334/ios-whatsapp/default.jpg'::character varying,
+    phone_number character varying(20),
+    about character varying(100) DEFAULT 'Hey, I''m using whatsapp.'::character varying,
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    update_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    status boolean DEFAULT false
+);
+
+
+ALTER TABLE public.users OWNER TO postgres;
+
+--
+-- TOC entry 216 (class 1259 OID 16561)
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.users_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.users_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 4972 (class 0 OID 0)
+-- Dependencies: 216
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
+
+
+--
+-- TOC entry 4746 (class 2604 OID 16807)
+-- Name: calls id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.calls ALTER COLUMN id SET DEFAULT nextval('public.calls_id_seq'::regclass);
+
+
+--
+-- TOC entry 4742 (class 2604 OID 16758)
+-- Name: friends id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.friends ALTER COLUMN id SET DEFAULT nextval('public.friends_id_seq'::regclass);
+
+
+--
+-- TOC entry 4749 (class 2604 OID 16833)
+-- Name: groupmembers id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.groupmembers ALTER COLUMN id SET DEFAULT nextval('public.groupmembers_id_seq'::regclass);
+
+
+--
+-- TOC entry 4736 (class 2604 OID 16646)
+-- Name: groups id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.groups ALTER COLUMN id SET DEFAULT nextval('public.groups_id_seq'::regclass);
+
+
+--
+-- TOC entry 4750 (class 2604 OID 16850)
+-- Name: media id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.media ALTER COLUMN id SET DEFAULT nextval('public.media_id_seq'::regclass);
+
+
+--
+-- TOC entry 4740 (class 2604 OID 16737)
+-- Name: messages id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.messages ALTER COLUMN id SET DEFAULT nextval('public.messages_id_seq'::regclass);
+
+
+--
+-- TOC entry 4739 (class 2604 OID 16676)
+-- Name: notificationtokens id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.notificationtokens ALTER COLUMN id SET DEFAULT nextval('public.notificationtokens_id_seq'::regclass);
+
+
+--
+-- TOC entry 4752 (class 2604 OID 16870)
+-- Name: status id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.status ALTER COLUMN id SET DEFAULT nextval('public.status_id_seq'::regclass);
+
+
+--
+-- TOC entry 4729 (class 2604 OID 16565)
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
+-- TOC entry 4951 (class 0 OID 16804)
+-- Dependencies: 227
+-- Data for Name: calls; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.calls (id, caller, receiver, started_at, duration, call_type) FROM stdin;
+\.
+
+
+--
+-- TOC entry 4949 (class 0 OID 16755)
+-- Dependencies: 225
+-- Data for Name: friends; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.friends (id, friend1, friend2, friends_since, last_message, last_message_time, last_message_type) FROM stdin;
+\.
+
+
+--
+-- TOC entry 4953 (class 0 OID 16830)
+-- Dependencies: 229
+-- Data for Name: groupmembers; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.groupmembers (id, group_id, user_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 4943 (class 0 OID 16643)
+-- Dependencies: 219
+-- Data for Name: groups; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.groups (id, created_at, group_profile, group_description, group_name, admin_id) FROM stdin;
+\.
+
+
+--
+-- TOC entry 4955 (class 0 OID 16847)
+-- Dependencies: 231
+-- Data for Name: media; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.media (id, sender, receiver, media_link, media_type, sent_at) FROM stdin;
+\.
+
+
+--
+-- TOC entry 4947 (class 0 OID 16734)
+-- Dependencies: 223
+-- Data for Name: messages; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.messages (id, receiver, sender, message, sent_at) FROM stdin;
+1	16	17	Hey, how are you?	2024-06-20 23:01:51.173347
+2	17	16	I am good, thanks!	2024-06-20 23:01:51.173347
+3	18	19	Are we meeting tomorrow?	2024-06-20 23:01:51.173347
+4	19	18	Yes, see you at 10 AM.	2024-06-20 23:01:51.173347
+5	20	21	Have you seen the new movie?	2024-06-20 23:01:51.173347
+6	21	20	Not yet, is it good?	2024-06-20 23:01:51.173347
+7	22	23	Let's plan a trip next month.	2024-06-20 23:01:51.173347
+8	23	22	Sure, where do you want to go?	2024-06-20 23:01:51.173347
+9	24	16	Remember to submit the report by Friday.	2024-06-20 23:01:51.173347
+10	16	24	Got it, will do!	2024-06-20 23:01:51.173347
+11	17	18	Do you have the presentation slides?	2024-06-20 23:01:51.173347
+12	18	17	Yes, I will send them to you shortly.	2024-06-20 23:01:51.173347
+13	19	20	What time is the meeting tomorrow?	2024-06-20 23:01:51.173347
+14	20	19	It starts at 9 AM.	2024-06-20 23:01:51.173347
+15	21	22	Let's grab lunch today.	2024-06-20 23:01:51.173347
+16	22	21	Sure, I'm free after 1 PM.	2024-06-20 23:01:51.173347
+17	23	24	Have you reviewed the proposal draft?	2024-06-20 23:01:51.173347
+18	24	23	Not yet, will do it this evening.	2024-06-20 23:01:51.173347
+19	16	22	Happy birthday!	2024-06-20 23:01:51.173347
+20	22	16	Thank you!	2024-06-20 23:01:51.173347
+21	17	16	Hey there! How was your weekend?	2024-06-20 23:01:51.173347
+22	16	17	Hi! It was great, went hiking.	2024-06-20 23:01:51.173347
+23	18	19	Are we still on for the concert this Friday?	2024-06-20 23:01:51.173347
+24	19	18	Yes, got the tickets already!	2024-06-20 23:01:51.173347
+25	20	21	Do you know when the new project starts?	2024-06-20 23:01:51.173347
+26	21	20	It kicks off next Monday.	2024-06-20 23:01:51.173347
+27	22	23	Let's discuss the budget for next quarter.	2024-06-20 23:01:51.173347
+28	23	22	Sure, let's schedule a meeting.	2024-06-20 23:01:51.173347
+29	24	16	Reminder: Team meeting at 3 PM today.	2024-06-20 23:01:51.173347
+30	16	24	Got it, I'll be there.	2024-06-20 23:01:51.173347
+31	17	18	Could you send me the updated report?	2024-06-20 23:01:51.173347
+32	18	17	Sure, I'll email it to you.	2024-06-20 23:01:51.173347
+33	19	20	Do you have any dietary restrictions for the team lunch?	2024-06-20 23:01:51.173347
+34	20	19	No restrictions, I'm good with anything.	2024-06-20 23:01:51.173347
+35	21	22	Let's catch up over coffee this weekend.	2024-06-20 23:01:51.173347
+36	22	21	Sounds good, Saturday morning?	2024-06-20 23:01:51.173347
+37	23	24	Reminder: Review the client proposal by tomorrow.	2024-06-20 23:01:51.173347
+38	24	23	Understood, I'll complete it tonight.	2024-06-20 23:01:51.173347
+39	16	22	Happy holidays! Enjoy your vacation.	2024-06-20 23:01:51.173347
+40	22	16	Thank you! Same to you.	2024-06-20 23:01:51.173347
+41	17	16	Hey there! How was your weekend?	2024-06-20 23:01:51.173347
+42	16	17	Hi! It was great, went hiking.	2024-06-20 23:01:51.173347
+43	18	19	Are we still on for the concert this Friday?	2024-06-20 23:01:51.173347
+44	19	18	Yes, got the tickets already!	2024-06-20 23:01:51.173347
+45	20	21	Do you know when the new project starts?	2024-06-20 23:01:51.173347
+46	21	20	It kicks off next Monday.	2024-06-20 23:01:51.173347
+47	22	23	Let's discuss the budget for next quarter.	2024-06-20 23:01:51.173347
+48	23	22	Sure, let's schedule a meeting.	2024-06-20 23:01:51.173347
+49	24	16	Reminder: Team meeting at 3 PM today.	2024-06-20 23:01:51.173347
+50	16	24	Got it, I'll be there.	2024-06-20 23:01:51.173347
+51	17	18	Could you send me the updated report?	2024-06-20 23:01:51.173347
+52	18	17	Sure, I'll email it to you.	2024-06-20 23:01:51.173347
+53	19	20	Do you have any dietary restrictions for the team lunch?	2024-06-20 23:01:51.173347
+54	20	19	No restrictions, I'm good with anything.	2024-06-20 23:01:51.173347
+55	21	22	Let's catch up over coffee this weekend.	2024-06-20 23:01:51.173347
+56	22	21	Sounds good, Saturday morning?	2024-06-20 23:01:51.173347
+57	23	24	Reminder: Review the client proposal by tomorrow.	2024-06-20 23:01:51.173347
+58	24	23	Understood, I'll complete it tonight.	2024-06-20 23:01:51.173347
+59	16	22	Happy holidays! Enjoy your vacation.	2024-06-20 23:01:51.173347
+60	22	16	Thank you! Same to you.	2024-06-20 23:01:51.173347
+\.
+
+
+--
+-- TOC entry 4945 (class 0 OID 16673)
+-- Dependencies: 221
+-- Data for Name: notificationtokens; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.notificationtokens (id, user_id, token) FROM stdin;
+\.
+
+
+--
+-- TOC entry 4957 (class 0 OID 16867)
+-- Dependencies: 233
+-- Data for Name: status; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.status (id, user_id, status_link, status_text, uploaded_at, status_type, status_text_color) FROM stdin;
+\.
+
+
+--
+-- TOC entry 4941 (class 0 OID 16562)
+-- Dependencies: 217
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.users (id, name, email, profile_picture, phone_number, about, created_at, update_at, status) FROM stdin;
+16	daddy	user@example.com	https://res.cloudinary.com/drv13gs45/image/upload/v1717225334/ios-whatsapp/default.jpg	9989945158	Hey, I'm using whatsapp.	2024-06-20 22:33:16.336492	2024-06-20 22:33:16.336492	f
+17	jairaj	user@example.com	https://res.cloudinary.com/drv13gs45/image/upload/v1717225334/ios-whatsapp/default.jpg	9652384797	Hey, I'm using whatsapp.	2024-06-20 22:56:24.117832	2024-06-20 22:56:24.117832	f
+18	sushma	user@example.com	https://res.cloudinary.com/drv13gs45/image/upload/v1717225334/ios-whatsapp/default.jpg	9705306348	Hey, I'm using whatsapp.	2024-06-20 22:56:24.117832	2024-06-20 22:56:24.117832	f
+19	riyaz	user@example.com	https://res.cloudinary.com/drv13gs45/image/upload/v1717225334/ios-whatsapp/default.jpg	9014577766	Hey, I'm using whatsapp.	2024-06-20 22:56:24.117832	2024-06-20 22:56:24.117832	f
+20	adithya	user@example.com	https://res.cloudinary.com/drv13gs45/image/upload/v1717225334/ios-whatsapp/default.jpg	7093815199	Hey, I'm using whatsapp.	2024-06-20 22:56:24.117832	2024-06-20 22:56:24.117832	f
+21	vaishali	user@example.com	https://res.cloudinary.com/drv13gs45/image/upload/v1717225334/ios-whatsapp/default.jpg	9989052358	Hey, I'm using whatsapp.	2024-06-20 22:56:24.117832	2024-06-20 22:56:24.117832	f
+22	Devi	user@example.com	https://res.cloudinary.com/drv13gs45/image/upload/v1717225334/ios-whatsapp/default.jpg	6303165327	Hey, I'm using whatsapp.	2024-06-20 22:56:24.117832	2024-06-20 22:56:24.117832	f
+23	Pothuraju	user@example.com	https://res.cloudinary.com/drv13gs45/image/upload/v1717225334/ios-whatsapp/default.jpg	9989341135	Hey, I'm using whatsapp.	2024-06-20 22:56:24.117832	2024-06-20 22:56:24.117832	f
+24	Yaswanth	user@example.com	https://res.cloudinary.com/drv13gs45/image/upload/v1717225334/ios-whatsapp/default.jpg	8106344135	Hey, I'm using whatsapp.	2024-06-20 22:56:24.117832	2024-06-20 22:56:24.117832	f
+\.
+
+
+--
+-- TOC entry 4973 (class 0 OID 0)
+-- Dependencies: 226
+-- Name: calls_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.calls_id_seq', 1, false);
+
+
+--
+-- TOC entry 4974 (class 0 OID 0)
+-- Dependencies: 224
+-- Name: friends_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.friends_id_seq', 1, false);
+
+
+--
+-- TOC entry 4975 (class 0 OID 0)
+-- Dependencies: 228
+-- Name: groupmembers_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.groupmembers_id_seq', 1, false);
+
+
+--
+-- TOC entry 4976 (class 0 OID 0)
+-- Dependencies: 218
+-- Name: groups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.groups_id_seq', 2, true);
+
+
+--
+-- TOC entry 4977 (class 0 OID 0)
+-- Dependencies: 230
+-- Name: media_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.media_id_seq', 1, false);
+
+
+--
+-- TOC entry 4978 (class 0 OID 0)
+-- Dependencies: 222
+-- Name: messages_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.messages_id_seq', 60, true);
+
+
+--
+-- TOC entry 4979 (class 0 OID 0)
+-- Dependencies: 220
+-- Name: notificationtokens_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.notificationtokens_id_seq', 1, false);
+
+
+--
+-- TOC entry 4980 (class 0 OID 0)
+-- Dependencies: 232
+-- Name: status_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.status_id_seq', 1, false);
+
+
+--
+-- TOC entry 4981 (class 0 OID 0)
+-- Dependencies: 216
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.users_id_seq', 24, true);
+
+
+--
+-- TOC entry 4777 (class 2606 OID 16813)
+-- Name: calls calls_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.calls
+    ADD CONSTRAINT calls_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4769 (class 2606 OID 16767)
+-- Name: friends friends_friend1_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.friends
+    ADD CONSTRAINT friends_friend1_key UNIQUE (friend1);
+
+
+--
+-- TOC entry 4771 (class 2606 OID 16769)
+-- Name: friends friends_friend2_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.friends
+    ADD CONSTRAINT friends_friend2_key UNIQUE (friend2);
+
+
+--
+-- TOC entry 4773 (class 2606 OID 16765)
+-- Name: friends friends_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.friends
+    ADD CONSTRAINT friends_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4779 (class 2606 OID 16835)
+-- Name: groupmembers groupmembers_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.groupmembers
+    ADD CONSTRAINT groupmembers_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4761 (class 2606 OID 16649)
+-- Name: groups groups_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.groups
+    ADD CONSTRAINT groups_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4781 (class 2606 OID 16855)
+-- Name: media media_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.media
+    ADD CONSTRAINT media_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4767 (class 2606 OID 16742)
+-- Name: messages messages_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.messages
+    ADD CONSTRAINT messages_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4763 (class 2606 OID 16680)
+-- Name: notificationtokens notificationtokens_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.notificationtokens
+    ADD CONSTRAINT notificationtokens_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4765 (class 2606 OID 16682)
+-- Name: notificationtokens notificationtokens_user_id_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.notificationtokens
+    ADD CONSTRAINT notificationtokens_user_id_key UNIQUE (user_id);
+
+
+--
+-- TOC entry 4783 (class 2606 OID 16877)
+-- Name: status status_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.status
+    ADD CONSTRAINT status_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4775 (class 2606 OID 16771)
+-- Name: friends unique_friend_pair; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.friends
+    ADD CONSTRAINT unique_friend_pair UNIQUE (friend1, friend2);
+
+
+--
+-- TOC entry 4757 (class 2606 OID 16574)
+-- Name: users users_phone_number_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_phone_number_key UNIQUE (phone_number);
+
+
+--
+-- TOC entry 4759 (class 2606 OID 16572)
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 4790 (class 2606 OID 16814)
+-- Name: calls calls_caller_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.calls
+    ADD CONSTRAINT calls_caller_fkey FOREIGN KEY (caller) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 4791 (class 2606 OID 16819)
+-- Name: calls calls_receiver_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.calls
+    ADD CONSTRAINT calls_receiver_fkey FOREIGN KEY (receiver) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 4788 (class 2606 OID 16772)
+-- Name: friends friends_friend1_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.friends
+    ADD CONSTRAINT friends_friend1_fkey FOREIGN KEY (friend1) REFERENCES public.users(id);
+
+
+--
+-- TOC entry 4789 (class 2606 OID 16777)
+-- Name: friends friends_friend2_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.friends
+    ADD CONSTRAINT friends_friend2_fkey FOREIGN KEY (friend2) REFERENCES public.users(id);
+
+
+--
+-- TOC entry 4792 (class 2606 OID 16836)
+-- Name: groupmembers groupmembers_group_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.groupmembers
+    ADD CONSTRAINT groupmembers_group_id_fkey FOREIGN KEY (group_id) REFERENCES public.groups(id) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 4793 (class 2606 OID 16841)
+-- Name: groupmembers groupmembers_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.groupmembers
+    ADD CONSTRAINT groupmembers_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 4784 (class 2606 OID 16824)
+-- Name: groups groups_admin_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.groups
+    ADD CONSTRAINT groups_admin_id_fkey FOREIGN KEY (admin_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 4794 (class 2606 OID 16861)
+-- Name: media media_receiver_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.media
+    ADD CONSTRAINT media_receiver_fkey FOREIGN KEY (receiver) REFERENCES public.users(id);
+
+
+--
+-- TOC entry 4795 (class 2606 OID 16856)
+-- Name: media media_sender_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.media
+    ADD CONSTRAINT media_sender_fkey FOREIGN KEY (sender) REFERENCES public.users(id);
+
+
+--
+-- TOC entry 4786 (class 2606 OID 16743)
+-- Name: messages messages_receiver_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.messages
+    ADD CONSTRAINT messages_receiver_fkey FOREIGN KEY (receiver) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 4787 (class 2606 OID 16748)
+-- Name: messages messages_sender_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.messages
+    ADD CONSTRAINT messages_sender_fkey FOREIGN KEY (sender) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 4785 (class 2606 OID 16683)
+-- Name: notificationtokens notificationtokens_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.notificationtokens
+    ADD CONSTRAINT notificationtokens_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 4796 (class 2606 OID 16878)
+-- Name: status status_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.status
+    ADD CONSTRAINT status_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+-- Completed on 2024-06-21 07:40:32
+
+--
+-- PostgreSQL database dump complete
+--
+
+-- Completed on 2024-06-21 07:40:32
+
+--
+-- PostgreSQL database cluster dump complete
+--
+

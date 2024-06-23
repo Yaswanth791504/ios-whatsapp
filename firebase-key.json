@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "ios-whatsapp-clone-713d5",
+  "private_key_id": "ff30eef6b1c950adb807bb1f0bd5cb19b02af8ca",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDsCEl3cdZzOy9v\nzjQchWJSkwzHyvbUer/a2rc5laH7e0YF3FJ9k6ZSyxhInDsEZD/csO+k6o+ts+P7\nHCM5dJkDnxoX+9F/mCW2PD2Vs0rCBPJ6Jqk8liIV0MVXBpG8vOpK22LXpeOqB5IX\ndHXe61F7yFPIL7JrgStbDeJk8oOqwos2v0DP4neBfJv0P44EuB9GJJtylsmplR4I\n6+YDkpJUPxiNP6rUUDFJ0CUKXkUeBShlnDsBGgXyALIhQvgl1inkRg7jVBFc7fC+\nPRV/2bvdDGiK0/oIbBQgOvWCFkcqNfG2/9kcf/71Feb3nEPeW/uBtEfeypaQ77Yb\nKKfQNjKzAgMBAAECggEACKw84TxkscMLReBXTnPH2AEapDeJsbQGKBYHGBp7iboo\nkAWQ+GR8MfWcrlC8452FZTTd98ej2n4BX6EG84Q2LSMwk8Og5ow7v075jYfstGVd\nilR9inVGMMDR+q+KNY7hf9LadmvcVv6ROF02PMGVZgCt5216ClsEMbcFMLCVwVvz\nk0cyV/+Sy2gTKn4tmC1Uc73agroYrK88Yo/+NvGrkdltc1MREZ9Ek99ll3nwbpuj\nbs4/3Kz+QbjHKk4ud+2Ebwn3EwSq1SyG/tIO3n1vPDhReFmDAHUnGdiRMftR3mYX\nDhGJKOraiEIYHN9BsgTEGyR5v7mpyfBhA2sNdY9oLQKBgQD7WQW1KPIwpSdjiXLx\nruRqK0Gjf67MxFvJXxH9CLzkbhCe/TrEntpOrTZnw7yHwm9N4luT1uX6yamhK8Ud\nfc3AqNBeY8XPdq6B0z9BzVl39tUUJfg3OcwGBfdtM62pKSm9XKnWo14VS8RRjk7b\nrXKJBhV974665Xe+/RlKtQ/ANQKBgQDwZrHg3njUfHUCZRtrBhfux7M4WixE7oDm\ngecuAyDZHzHa/7RRj0ln8FIaLmPrtq8Il60Z4QaVN9CZSjmC9kbnJeEctfhjyTVu\n1qN0qd5S4gWcSxzTmK3F8OGr8jTMIQz8R6XlowbnvyFYHigV9DQdf90pGepGovTv\nboG+JHzURwKBgQDq6+u/xQOIn/ROvjsm1TY8XS2+aSqxzJ2VezxO6gnS32S9lSWG\nfIrCmnaNSY8+vGZXv0ekyGivnCjlsQlNZTYX6jDG6C4MmHrGcPFgyVPkIlpJuKtk\nwqqEvrLh6DlaMFUI3kEHki3vbZ+SMpZWEKlKlNsll/Apkyv24IzxHIYaOQKBgQCI\nYQoKUstjaBONP0SVq4hKOtpOXsF8fX18xzcaIEYzRoInBicKmen/4BMDrUucPjAA\nBOP7qW/tmRNq0vPbetFwcknJ2uXF3jDE51klZvSsOnMKXoZE9/mlMGkl/aq8HwfZ\n2t+fbaQONpy4+6qsAbTLA2240m3Ykru3VQ6fit2SIwKBgHdMPMVDpVLB8yTbg2W/\nE0UhJi6otKrGh2ucB6LeJgGt5Ypkn+FjLFTOoPqmwOWLIH9Ohlkb0vqnU/a3nTKT\nDh44N5a1CMEnvFUQR8SK8AL4iI1ZWn0beWhV7m1FvKv8RRR/MpgeaPZXS9le6Hot\nUrTdPwnzcrAbs9HwfM00y2ep\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-ut0dq@ios-whatsapp-clone-713d5.iam.gserviceaccount.com",
+  "client_id": "115740639311366060020",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-ut0dq%40ios-whatsapp-clone-713d5.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
