@@ -137,7 +137,7 @@ async def get_user_details(db: db_dependency, phone_number: str):
         phone_number=user.phone_number,
         about=user.about,
         profile_picture=user.profile_picture,
-        status=user.status
+        status=user.status  
     )
 
 
