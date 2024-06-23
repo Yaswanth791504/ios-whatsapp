@@ -122,7 +122,7 @@ class UserRequestResponse(BaseModel):
     phone_number : str
     about : str
     profile_picture : str
-    status: str
+    status: bool
     
 @router.get('/get', status_code=status.HTTP_200_OK, response_model=UserRequestResponse)
 async def get_user_details(db: db_dependency, phone_number: str):
