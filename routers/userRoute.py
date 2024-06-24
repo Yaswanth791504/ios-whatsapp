@@ -123,6 +123,7 @@ class UserRequestResponse(BaseModel):
     about : str
     profile_picture : str
     status: bool
+    token: str
     
 @router.get('/get', status_code=status.HTTP_200_OK, response_model=UserRequestResponse)
 async def get_user_details(db: db_dependency, phone_number: str):
@@ -131,13 +132,16 @@ async def get_user_details(db: db_dependency, phone_number: str):
         # logging.info(f'User with phone number {phone_number} not found')
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='User not found')
     
+    token = db.query(NotificationToken).filter(NotificationToken.user_id == user.id).first()
+    
     return UserRequestResponse(
         name=user.name,
         email=user.email,
         phone_number=user.phone_number,
         about=user.about,
         profile_picture=user.profile_picture,
-        status=user.status  
+        status=user.status,
+        token=token.token
     )
 
 
