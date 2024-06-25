@@ -22,13 +22,6 @@ with open('./firebase-key.json', 'w') as f:
     json.dump(dictionary, f)
 
 
-
-
-
-
-
-
-
 cred = credentials.Certificate("./firebase-key.json")
 firebase_admin.initialize_app(cred)
 
