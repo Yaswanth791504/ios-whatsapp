@@ -9,8 +9,25 @@ import os
 from sockets import sio_app
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
+import json
 
 app = FastAPI()
+
+def generate_firebase_key():
+    firebase_key_json = os.getenv('FIREBASE_PRIVATE_KEY_JSON')
+
+    if not firebase_key_json:
+        raise ValueError("Environment variable 'FIREBASE_PRIVATE_KEY_JSON' not set.")
+
+    firebase_key_dict = json.loads(firebase_key_json)
+
+    with open('firebase-key.json', 'w') as json_file:
+        json.dump(firebase_key_dict, json_file)
+
+# Generate the firebase-key.json
+generate_firebase_key()
+
+
 
 @app.post("/migrate")
 def migrate_db():
@@ -102,7 +119,8 @@ app.add_middleware(
 
 
 
+
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))
-    uvicorn.run('main:app', host="0.0.0.0",port=port, reload=True)
-    # uvicorn.run('main:app', port=port, reload=True)
+    # uvicorn.run('main:app', host="0.0.0.0",port=port, reload=True)
+    uvicorn.run('main:app', port=port, reload=True)
