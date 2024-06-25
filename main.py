@@ -13,22 +13,6 @@ import json
 
 app = FastAPI()
 
-def generate_firebase_key():
-    firebase_key_json = os.getenv('FIREBASE_PRIVATE_KEY_JSON')
-
-    if not firebase_key_json:
-        raise ValueError("Environment variable 'FIREBASE_PRIVATE_KEY_JSON' not set.")
-
-    firebase_key_dict = json.loads(firebase_key_json)
-
-    with open('firebase-key.json', 'w') as json_file:
-        json.dump(firebase_key_dict, json_file)
-
-# Generate the firebase-key.json
-generate_firebase_key()
-
-
-
 @app.post("/migrate")
 def migrate_db():
     local_conn_details = {
