@@ -251,46 +251,54 @@ async def get_messages(db: db_dependency, user_phone_number: str, friend_phone_n
 class UserMessage(BaseModel):
     message: str
     friend_phone_number: str
-
 @router.post('/message', status_code=status.HTTP_201_CREATED)
-async def update_user_message(user_phone_number: str, message: UserMessage,db: db_dependency):
+async def update_user_message(user_phone_number: str, message: UserMessage, db: db_dependency):
     try:
         user = db.query(User).filter(User.phone_number == user_phone_number).first()
         friend = db.query(User).filter(User.phone_number == message.friend_phone_number).first()
         if user is None or friend is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='User or friend not found')
         new_message = Message(
-            sender=user.id, 
-            receiver=friend.id, 
+            sender=user.id,
+            receiver=friend.id,
             message=message.message,
         )
         db.add(new_message)
+        print(f"User: {user.id}, Friend: {friend.id}")
         user_last_message = db.query(Friends).filter(
             ((Friends.friend1 == user.id) & (Friends.friend2 == friend.id)) |
             ((Friends.friend1 == friend.id) & (Friends.friend2 == user.id))
         ).first()
+        print(f"Fetched User Last Message: {user_last_message}")
         if user_last_message:
             user_last_message.last_message = message.message
             user_last_message.last_message_type = 'text'
         else:
             user_last_message = Friends(
-                friend1=user.id, 
-                friend2=friend.id, 
+                friend1=user.id,
+                friend2=friend.id,
                 last_message=message.message,
+                last_message_type='text'  
             )
             db.add(user_last_message)
         db.commit()
         token = db.query(NotificationToken).filter(NotificationToken.user_id == friend.id).first()
-        print(token.token)
-        send_message_notificaiton(token.token, user.name, message.message, user.profile_picture)
+        if token:
+            print(f"Notification Token: {token.token}")
+            send_message_notificaiton(token.token, user.name, message.message, user.profile_picture)
+        else:
+            print("No notification token found for the friend.")
     except HTTPException as http_exc:
         db.rollback()
+        print(f"HTTPException: {str(http_exc)}")
         raise http_exc
     except Exception as e:
         db.rollback()
+        print(f"Unexpected Error: {str(e)}")
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Unexpected Error: {str(e)}")
 
     return {"message": "Message updated and new entry added successfully"}
+
 
 
 class UserStatusResponse(BaseModel):
